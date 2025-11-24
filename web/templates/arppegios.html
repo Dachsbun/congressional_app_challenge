@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Music app</title>
+        <script src="https://cdn.jsdelivr.net/npm/picnic@7.1.0/Gruntfile.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@7.1.0/picnic.min.css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <main>
+			<center>
+            <h1 class = "center">Arpeggios</h1>
+			<p>Major scale going up until reported highest pitch</p>
+			<button onclick="scalesUp()">Go!</button>
+			<p>Major scale going down until reported lowest pitch</p>
+			<button onclick="scalesDown()">Go!</button>
+			<p>Major scale going up once</p>
+			<button onclick="scaleUp()">Go!</button>
+			<p>Major scale going down once</p>
+			<button onclick="scaleDown()">Go!</button>
+			<p>Play key pitches from the reported lowest pitch</p>
+			<button onclick="playStart()">Go!</button>
+			<p>Play key pitches from the reported highest pitch</p>
+			<button onclick="playEnd()">Go!</button>
+			</center>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
+			<script>
+				const delay = ms => new Promise(res => setTimeout(res, ms));
+				var baseLowPitch = {{ lowPitch }};
+				console.log(baseLowPitch);
+				var runningLowPitch = baseLowPitch;
+				var baseHighPitch = {{ highPitch }}
+				console.log(baseHighPitch);
+				var runningHighPitch = baseHighPitch;
+				var basePitch = baseLowPitch;
+				var sineWave = new Pizzicato.Sound({ 
+					source: 'wave', 
+					options: {
+						frequency: basePitch,
+						attack: 0.5,
+						release: 0.9,
+					}
+				});
+				function startArppegio() {
+					sineWave.play();
+				};
+				function soundSet(sound, pitch) {
+					sound.pause();
+					sound.frequency = pitch;
+					sound.play();
+					console.log(basePitch, sineWave.frequency);
+				};
+				function pitchChange(sound, amount) {
+					sound.pause();
+					sound.frequency = sound.frequency * Math.pow(2,amount/12);
+					sound.play();
+					console.log(basePitch, sineWave.frequency);
+				};
+				const scaleUp = async() => {
+					startArppegio();
+					//while (sineWave.frequency<highPitch) {
+						soundSet(sineWave, basePitch)
+						setTimeout("pitchChange(sineWave, 2)", 1000);
+						setTimeout("pitchChange(sineWave, 2)", 2000);
+						setTimeout("pitchChange(sineWave, 1)", 3000);
+						setTimeout("pitchChange(sineWave, 2)", 4000);
+						setTimeout("pitchChange(sineWave, 2)", 5000);
+						setTimeout("pitchChange(sineWave, 2)", 6000);
+						setTimeout("pitchChange(sineWave, 1)", 7000);
+						basePitch = basePitch * Math.pow(2,1/12);
+						//setTimeout("soundSet(sineWave, basePitch)", 7999);
+						setTimeout("sineWave.stop()", 8000);
+						console.log(basePitch, sineW.ave.frequency);
+					//}
+				};
+				const scalesUp = async() => {
+					basePitch = baseLowPitch;
+					console.log((basePitch * Math.pow(2, 12/12)));
+					console.log (baseHighPitch);
+					while ((basePitch * Math.pow(2, 12/12))<baseHighPitch) {
+						console.log("1");
+						scaleUp();
+						await delay(9000);
+						
+					}
+				}
+				const scaleDown = async() => {
+					startArppegio();
+					//while (sineWave.frequency<highPitch) {
+						soundSet(sineWave, basePitch * Math.pow(2, 11/12))
+						setTimeout("pitchChange(sineWave, -1)", 1000);
+						setTimeout("pitchChange(sineWave, -2)", 2000);
+						setTimeout("pitchChange(sineWave, -2)", 3000);
+						setTimeout("pitchChange(sineWave, -2)", 4000);
+						setTimeout("pitchChange(sineWave, -1)", 5000);
+						setTimeout("pitchChange(sineWave, -2)", 6000);
+						setTimeout("pitchChange(sineWave, -2)", 7000);
+						basePitch = basePitch / Math.pow(2,1/12);
+						//setTimeout("soundSet(sineWave, basePitch)", 7999);
+						setTimeout("sineWave.stop()", 8000);
+						console.log(basePitch, sineWave.frequency);
+					//}
+				};
+				const scalesDown = async() => {
+					basePitch = baseHighPitch / Math.pow(2, 11/12);
+					console.log((basePitch));
+					console.log((baseLowPitch))
+					while ((basePitch>baseLowPitch)) {
+						console.log("1");
+						scaleDown();
+						await delay(9000);
+						
+					}
+				}
+				const playStart = async() => {
+					soundSet(sineWave, baseLowPitch);
+					await delay(1000);
+					pitchChange(sineWave, 4);
+					await delay(1000);
+					pitchChange(sineWave, 3);
+					await delay(1000);
+					pitchChange(sineWave, 5);
+					await delay(1000);
+					sineWave.pause()
+					soundSet(sineWave, baseLowPitch*2);
+					await delay(1000);
+					pitchChange(sineWave, -5);
+					await delay(1000);
+					pitchChange(sineWave, -3);
+					await delay(1000);
+					pitchChange(sineWave, -4);
+					await delay(1000);
+					sineWave.pause()
+				}
+				const playEnd = async() => {
+					soundSet(sineWave, baseHighPitch/2);
+					await delay(1000);
+					pitchChange(sineWave, 4);
+					await delay(1000);
+					pitchChange(sineWave, 3);
+					await delay(1000);
+					pitchChange(sineWave, 5);
+					await delay(1000);
+					sineWave.pause()
+					soundSet(sineWave, baseHighPitch);
+					await delay(1000);
+					pitchChange(sineWave, -5);
+					await delay(1000);
+					pitchChange(sineWave, -3);
+					await delay(1000);
+					pitchChange(sineWave, -4);
+					await delay(1000);
+					sineWave.pause()
+				}
+				/*
+				sineWave.on('pause', function() {
+					sineWave.frequency = sineWave.frequency * Math.pow(2,1/12);
+					sineWave.play();
+					setTimeout('sineWave.pause()', 1000);
+				})
+				*/
+			</script>
+        </main>
+    </body>
+</html>

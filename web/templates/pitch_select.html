@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Music app</title>
+        <link href="{{ url_for('static', path='\styles.css') }}" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/picnic@7.1.0/Gruntfile.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@7.1.0/picnic.min.css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <main>
+			<center>
+            <h1 class = "center">Welcome!</h1>
+			<form class = "center" method = "post">
+				<div>
+					<p>The lowest pitch you can hit:</p>
+					<label for="lower">Pitch
+						<input
+						type="text"
+						id="name"
+						name="lower"
+						required
+						minlength="2"
+						maxlength="3"
+						size="4"/>
+					</label>
+					<br>
+					<p>The highest pitch you can comfortably hit:</p>
+					<label for="higher">Pitch
+						<input
+						type="text"
+						id="name"
+						name="higher"
+						required
+						minlength="2"
+						maxlength="3"
+						size="4"/>
+					</label>
+				</div>
+				<div>
+					<input type="submit"/>
+					</input>
+				</div>
+			</form>
+			<p>Result: {{ low_pitch }} {{ high_pitch }}</p>
+			</center>
+        </main>
+        <script src="index.js"></script>
+    </body>
+</html>
